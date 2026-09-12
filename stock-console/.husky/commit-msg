@@ -1,0 +1,2 @@
+cd stock-console && bunx --no commitlint --edit "$1"
+

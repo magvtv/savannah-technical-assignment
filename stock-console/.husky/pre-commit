@@ -1,0 +1,1 @@
+cd stock-console && bun run test:unit --run
