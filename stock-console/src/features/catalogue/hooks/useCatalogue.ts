@@ -7,7 +7,8 @@ export function useCatalogue(params: Ref<CatalogueParams>) {
     queryKey: computed(() => ['products', params.value]),
     queryFn: () => fetchProducts(params.value),
     // stale-while-revalidate caching philosophy
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 1000 * 60 * 5, // 5 minutes for smoother user navigation without unnecessary network refetches
+    
   })
 
   return {
@@ -19,6 +20,6 @@ export function useCategories() {
   return useQuery({
     queryKey: ['categories'],
     queryFn: fetchCategories,
-    staleTime: Infinity, // Categories don't change often
+    staleTime: Infinity, // categories do not change often during a session
   })
 }
