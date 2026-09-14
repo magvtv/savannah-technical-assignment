@@ -48,6 +48,7 @@ Wednesday 9th September 2026
 - drafting and perfecting documentation 
 
 Thursday 10th September 2026
+
 Friday 11th September 2026
 Sunday 13th September 2026
 Monday 14 th September 2026
