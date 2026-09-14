@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, onUnmounted } from 'vue'
 import { useCategories } from '../hooks/useCatalogue'
 
 const props = defineProps<{
@@ -17,39 +17,38 @@ const emit = defineEmits<{
 const { data: categories, isLoading: isLoadingCategories } = useCategories()
 
 const search = ref(props.initialSearch)
+const category = ref(props.initialCategory)
+const sort = ref(props.initialSort || 'title-asc')
 let debounceTimeout: ReturnType<typeof setTimeout> | undefined
 
 const onSearchInput = () => {
-  clearTimeout(debounceTimeout)
+  if (debounceTimeout) clearTimeout(debounceTimeout)
   debounceTimeout = setTimeout(() => {
     emit('update:search', search.value)
   }, 300)
 }
 
 const clearSearch = () => {
+  if (debounceTimeout) clearTimeout(debounceTimeout)
   search.value = ''
   emit('update:search', '')
 }
 
-// Watchers for immediate updates on selects
-const category = ref(props.initialCategory)
-watch(category, (newVal) => emit('update:category', newVal))
+onUnmounted(() => {
+  if (debounceTimeout) clearTimeout(debounceTimeout)
+})
 
-const sort = ref(props.initialSort || 'title-asc')
+watch(category, (newVal) => emit('update:category', newVal))
 watch(sort, (newVal) => emit('update:sort', newVal))
 
 // Sync props if URL changes from outside
 watch(
-  () => props.initialSearch,
-  (newVal) => (search.value = newVal),
-)
-watch(
-  () => props.initialCategory,
-  (newVal) => (category.value = newVal),
-)
-watch(
-  () => props.initialSort,
-  (newVal) => (sort.value = newVal || 'title-asc'),
+  () => [props.initialSearch, props.initialCategory, props.initialSort] as const,
+  ([newSearch, newCat, newSort]) => {
+    search.value = newSearch || ''
+    category.value = newCat || ''
+    sort.value = newSort || 'title-asc'
+  },
 )
 </script>
 

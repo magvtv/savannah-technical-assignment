@@ -33,26 +33,16 @@ export function useCatalogueParams() {
     page?: number
   }) => {
     const query = { ...route.query }
-
     let resetPage = false
 
-    if (updates.search !== undefined) {
-      if (updates.search) query.search = updates.search
-      else delete query.search
-      resetPage = true
-    }
-
-    if (updates.category !== undefined) {
-      if (updates.category) query.category = updates.category
-      else delete query.category
-      resetPage = true
-    }
-
-    if (updates.sort !== undefined) {
-      if (updates.sort) query.sort = updates.sort
-      else delete query.sort
-      resetPage = true
-    }
+    const filterKeys: Array<'search' | 'category' | 'sort'> = ['search', 'category', 'sort']
+    filterKeys.forEach((key) => {
+      if (updates[key] !== undefined) {
+        if (updates[key]) query[key] = updates[key]
+        else delete query[key]
+        resetPage = true
+      }
+    })
 
     if (updates.page !== undefined) {
       query.page = updates.page.toString()
