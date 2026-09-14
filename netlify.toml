@@ -1,0 +1,9 @@
+[build]
+  base = "stock-console"
+  command = "bun run build"
+  publish = "stock-console/dist"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
