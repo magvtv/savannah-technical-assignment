@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useAuthStore } from '../../features/auth/stores/useAuthStore'
-import { refreshSession } from '../../features/auth/api/auth.api'
+import { refreshSession, type AuthResponse } from '../../features/auth/api/auth.api'
 import router from '../../router'
 
 export const apiClient = axios.create({
@@ -19,6 +19,8 @@ apiClient.interceptors.request.use((config) => {
   return config
 })
 
+let refreshPromise: Promise<AuthResponse> | null = null
+
 // response interceptor that handle 401 errors by refreshing the session
 apiClient.interceptors.response.use(
   (response) => response,
@@ -34,20 +36,27 @@ apiClient.interceptors.response.use(
 
       originalRequest._retry = true
       const authStore = useAuthStore()
-      
+
       try {
         if (!authStore.authState?.refreshToken) {
           throw new Error('No refresh token available')
         }
-        
-        // attempt refresh
-        const refreshedData = await refreshSession(authStore.authState.refreshToken)
+
+        // single-flight lock: reuse in-flight refresh promise if present
+        if (!refreshPromise) {
+          refreshPromise = refreshSession(authStore.authState.refreshToken).finally(() => {
+            refreshPromise = null
+          })
+        }
+
+        const refreshedData = await refreshPromise
+        if (!refreshedData) throw new Error('Refresh failed')
+
         authStore.setAuth(refreshedData)
-        
+
         // retry original request with new token
         originalRequest.headers.Authorization = `Bearer ${refreshedData.accessToken}`
         return apiClient(originalRequest)
-        
       } catch (refreshError) {
         // refresh failed, clear session and redirect to login
         authStore.clearAuth()
@@ -56,7 +65,7 @@ apiClient.interceptors.response.use(
         return Promise.reject(refreshError)
       }
     }
-    
+
     return Promise.reject(error)
-  }
+  },
 )
