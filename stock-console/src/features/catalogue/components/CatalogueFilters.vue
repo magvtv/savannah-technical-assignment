@@ -35,7 +35,7 @@ const clearSearch = () => {
 const category = ref(props.initialCategory)
 watch(category, (newVal) => emit('update:category', newVal))
 
-const sort = ref(props.initialSort)
+const sort = ref(props.initialSort || 'title-asc')
 watch(sort, (newVal) => emit('update:sort', newVal))
 
 // Sync props if URL changes from outside
@@ -49,7 +49,7 @@ watch(
 )
 watch(
   () => props.initialSort,
-  (newVal) => (sort.value = newVal),
+  (newVal) => (sort.value = newVal || 'title-asc'),
 )
 </script>
 
@@ -104,10 +104,12 @@ watch(
 
       <div class="select-wrapper">
         <select v-model="sort" aria-label="Sort items">
-          <option value="">Default Sort</option>
-          <option value="title">Name (A-Z)</option>
-          <option value="stock">Stock Quantity</option>
-          <option value="price">Price</option>
+          <option value="title-asc">Name (A-Z)</option>
+          <option value="title-desc">Name (Z-A)</option>
+          <option value="stock-asc">Lowest Stock First</option>
+          <option value="stock-desc">Highest Stock First</option>
+          <option value="price-asc">Price (Low to High)</option>
+          <option value="price-desc">Price (High to Low)</option>
         </select>
         <span class="select-chevron">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
