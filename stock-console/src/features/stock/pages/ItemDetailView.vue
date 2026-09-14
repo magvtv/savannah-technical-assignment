@@ -2,6 +2,7 @@
 import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStockItem } from '../hooks/useStockItem'
+import StateCard from '../../../app/components/StateCard.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -48,17 +49,20 @@ const goBack = () => {
       <span>Back to Catalogue</span>
     </button>
 
-    <div v-if="itemQuery.isPending.value" class="state-card loading">
-      <div class="spinner"></div>
-      <p>Loading item details...</p>
-    </div>
+    <StateCard
+      v-if="itemQuery.isPending.value"
+      type="loading"
+      message="Loading item details..."
+    />
 
-    <div v-else-if="itemQuery.isError.value" class="state-card error">
-      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
-      <h3>Item Not Found</h3>
-      <p>Failed to load this item. It may not exist or network connection failed.</p>
-      <button @click="itemQuery.refetch()" class="action-button">Retry</button>
-    </div>
+    <StateCard
+      v-else-if="itemQuery.isError.value"
+      type="error"
+      title="Item Not Found"
+      message="Failed to load this item. It may not exist or network connection failed."
+      actionText="Retry"
+      @action="itemQuery.refetch()"
+    />
 
     <div v-else-if="itemQuery.data.value" class="content">
       <div class="hero-card">
@@ -197,61 +201,6 @@ input[type='number'] {
   background-color: #f8fafc;
   color: #0f172a;
   border-color: #cbd5e1;
-}
-
-.state-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 3.5rem 1.5rem;
-  text-align: center;
-  background: white;
-  border-radius: 12px;
-  border: 1px dashed #cbd5e1;
-  color: #64748b;
-  margin: 1rem 0;
-}
-
-.state-card.loading {
-  gap: 1rem;
-}
-
-.spinner {
-  width: 28px;
-  height: 28px;
-  border: 3px solid #e2e8f0;
-  border-top-color: #2563eb;
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.state-card.error {
-  color: #dc2626;
-  background-color: #fef2f2;
-  border-color: #fca5a5;
-}
-
-.state-card.error svg {
-  color: #dc2626;
-}
-
-.action-button {
-  margin-top: 1rem;
-  padding: 0.6rem 1.2rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #ffffff;
-  background-color: #111827;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
 }
 
 .hero-card {
