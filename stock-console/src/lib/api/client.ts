@@ -10,7 +10,7 @@ export const apiClient = axios.create({
   }
 })
 
-// Request Interceptor: Attach Token
+// request interceptor that attaches auth bearer token
 apiClient.interceptors.request.use((config) => {
   const authStore = useAuthStore()
   if (authStore.authState?.accessToken) {
@@ -19,15 +19,15 @@ apiClient.interceptors.request.use((config) => {
   return config
 })
 
-// Response Interceptor: Handle 401s
+// response interceptor that handle 401 errors by refreshing the session
 apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config
 
-    // If error is 401 and we haven't already retried this request
+    // if the error is 401 and we haven't already retried this request...
     if (error.response?.status === 401 && !originalRequest._retry) {
-      // Don't intercept calls to the refresh endpoint itself
+      // ...do not intercept calls to the refresh endpoint itself
       if (originalRequest.url === '/auth/refresh') {
         return Promise.reject(error)
       }
@@ -40,16 +40,16 @@ apiClient.interceptors.response.use(
           throw new Error('No refresh token available')
         }
         
-        // Attempt refresh
+        // attempt refresh
         const refreshedData = await refreshSession(authStore.authState.refreshToken)
         authStore.setAuth(refreshedData)
         
-        // Retry original request with new token
+        // retry original request with new token
         originalRequest.headers.Authorization = `Bearer ${refreshedData.accessToken}`
         return apiClient(originalRequest)
         
       } catch (refreshError) {
-        // Refresh failed, clear session and redirect to login
+        // refresh failed, clear session and redirect to login
         authStore.clearAuth()
         const currentPath = router.currentRoute.value.fullPath
         router.push({ name: 'login', query: { redirect: currentPath } })
