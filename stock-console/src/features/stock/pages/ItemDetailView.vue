@@ -42,18 +42,24 @@ const goBack = () => {
 <template>
   <div class="detail-view">
     <button class="back-button" @click="goBack" aria-label="Go back to catalogue">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="19" y1="12" x2="5" y2="12"/>
-        <polyline points="12 19 5 12 12 5"/>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <line x1="19" y1="12" x2="5" y2="12" />
+        <polyline points="12 19 5 12 12 5" />
       </svg>
       <span>Back to Catalogue</span>
     </button>
 
-    <StateCard
-      v-if="itemQuery.isPending.value"
-      type="loading"
-      message="Loading item details..."
-    />
+    <StateCard v-if="itemQuery.isPending.value" type="loading" message="Loading item details..." />
 
     <StateCard
       v-else-if="itemQuery.isError.value"
@@ -93,7 +99,10 @@ const goBack = () => {
               class="metric-val status-badge"
               :class="itemQuery.data.value.stock > 0 ? 'in-stock' : 'out-of-stock'"
             >
-              {{ itemQuery.data.value.availabilityStatus || (itemQuery.data.value.stock > 0 ? 'In Stock' : 'Out of Stock') }}
+              {{
+                itemQuery.data.value.availabilityStatus ||
+                (itemQuery.data.value.stock > 0 ? 'In Stock' : 'Out of Stock')
+              }}
             </span>
           </div>
         </div>
@@ -115,7 +124,9 @@ const goBack = () => {
                 type="button"
                 class="step-btn"
                 @click="adjustStock(-1)"
-                :disabled="updateMutation.isPending.value || (draftStock !== null && draftStock <= 0)"
+                :disabled="
+                  updateMutation.isPending.value || (draftStock !== null && draftStock <= 0)
+                "
                 aria-label="Decrease stock"
               >
                 &minus;
@@ -141,7 +152,10 @@ const goBack = () => {
             <button
               @click="saveStock"
               :disabled="
-                updateMutation.isPending.value || draftStock === itemQuery.data.value.stock || draftStock === null || draftStock < 0
+                updateMutation.isPending.value ||
+                draftStock === itemQuery.data.value.stock ||
+                draftStock === null ||
+                draftStock < 0
               "
               class="primary-button"
             >
@@ -152,12 +166,42 @@ const goBack = () => {
         </div>
 
         <div v-if="updateMutation.isError.value" class="mutation-error" role="alert">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" x2="12" y1="8" y2="12" />
+            <line x1="12" x2="12.01" y1="16" y2="16" />
+          </svg>
           <span>Couldn't update stock count. Please try again.</span>
         </div>
         <div v-else-if="updateMutation.isSuccess.value" class="mutation-success" role="status">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-          <span>Stock count successfully updated to <strong>{{ itemQuery.data.value.stock }}</strong> units.</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+            <polyline points="22 4 12 14.01 9 11.01" />
+          </svg>
+          <span
+            >Stock count successfully updated to
+            <strong>{{ itemQuery.data.value.stock }}</strong> units.</span
+          >
         </div>
       </div>
     </div>
@@ -401,7 +445,9 @@ input[type='number'] {
   border: 1px solid #cbd5e1;
   border-radius: 8px;
   background: #ffffff;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
 
 .stepper-group input:focus {

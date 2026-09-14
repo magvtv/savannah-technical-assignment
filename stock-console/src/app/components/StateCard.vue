@@ -19,21 +19,49 @@ const emit = defineEmits<{
     </template>
 
     <template v-else-if="type === 'error'">
-      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="32"
+        height="32"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" x2="12" y1="8" y2="12" />
+        <line x1="12" x2="12.01" y1="16" y2="16" />
       </svg>
       <h3 v-if="title">{{ title }}</h3>
       <p v-if="message">{{ message }}</p>
-      <button v-if="actionText" @click="emit('action')" class="action-button">{{ actionText }}</button>
+      <button v-if="actionText" @click="emit('action')" class="action-button">
+        {{ actionText }}
+      </button>
     </template>
 
     <template v-else-if="type === 'empty'">
-      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="32"
+        height="32"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle cx="11" cy="11" r="8" />
+        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        <line x1="8" y1="11" x2="14" y2="11" />
       </svg>
       <h3 v-if="title">{{ title }}</h3>
       <p v-if="message">{{ message }}</p>
-      <button v-if="actionText" @click="emit('action')" class="action-button">{{ actionText }}</button>
+      <button v-if="actionText" @click="emit('action')" class="action-button">
+        {{ actionText }}
+      </button>
     </template>
   </div>
 </template>

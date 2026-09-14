@@ -6,8 +6,8 @@ import router from '../../router'
 export const apiClient = axios.create({
   baseURL: 'https://dummyjson.com',
   headers: {
-    'Content-Type': 'application/json'
-  }
+    'Content-Type': 'application/json',
+  },
 })
 
 // request interceptor that attaches auth bearer token

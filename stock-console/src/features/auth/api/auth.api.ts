@@ -17,7 +17,7 @@ export const login = async (username: string, password: string): Promise<AuthRes
     username,
     password,
     // Savanah requirement: Short expiry for testing
-    expiresInMins: 1
+    expiresInMins: 1,
   })
   return data
 }
@@ -26,7 +26,7 @@ export const refreshSession = async (refreshToken: string): Promise<AuthResponse
   // Use a raw axios call here or make sure interceptor avoids looping on /auth/refresh
   const { data } = await apiClient.post<AuthResponse>('/auth/refresh', {
     refreshToken,
-    expiresInMins: 1
+    expiresInMins: 1,
   })
   return data
 }

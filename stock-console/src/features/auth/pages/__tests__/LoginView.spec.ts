@@ -4,15 +4,15 @@ import { createPinia, setActivePinia } from 'pinia'
 import LoginView from '../LoginView.vue'
 
 // Mock vue-router
-const mockPush = vi.fn()
+const mockPush = vi.fn<() => void>()
 vi.mock('vue-router', () => ({
   useRouter: () => ({ push: mockPush }),
-  useRoute: () => ({ query: {} })
+  useRoute: () => ({ query: {} }),
 }))
 
 // Mock auth api
 vi.mock('../../api/auth.api', () => ({
-  login: vi.fn().mockResolvedValue({
+  login: vi.fn<() => Promise<unknown>>().mockResolvedValue({
     id: 1,
     username: 'emilys',
     email: 'emilys@example.com',
@@ -21,8 +21,8 @@ vi.mock('../../api/auth.api', () => ({
     gender: 'female',
     image: 'https://dummyjson.com/icon/emilys/128',
     accessToken: 'mock-access-token',
-    refreshToken: 'mock-refresh-token'
-  })
+    refreshToken: 'mock-refresh-token',
+  }),
 }))
 
 describe('LoginView', () => {

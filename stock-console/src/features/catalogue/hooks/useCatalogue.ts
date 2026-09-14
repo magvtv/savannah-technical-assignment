@@ -8,7 +8,6 @@ export function useCatalogue(params: Ref<CatalogueParams>) {
     queryFn: () => fetchProducts(params.value),
     // stale-while-revalidate caching philosophy
     staleTime: 1000 * 60 * 5, // 5 minutes for smoother user navigation without unnecessary network refetches
-    
   })
 
   return {

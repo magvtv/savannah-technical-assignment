@@ -46,8 +46,18 @@ const stockStatusLabel = computed(() => {
     </div>
 
     <div class="chevron">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="9 18 15 12 9 6"/>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <polyline points="9 18 15 12 9 6" />
       </svg>
     </div>
   </router-link>
@@ -66,7 +76,10 @@ const stockStatusLabel = computed(() => {
   background-color: #ffffff;
   margin-bottom: 0.75rem;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
-  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    border-color 0.15s ease;
 }
 
 .list-row:hover {
@@ -225,7 +238,9 @@ const stockStatusLabel = computed(() => {
   color: #cbd5e1;
   display: inline-flex;
   align-items: center;
-  transition: color 0.15s, transform 0.15s;
+  transition:
+    color 0.15s,
+    transform 0.15s;
   flex-shrink: 0;
 }
 
